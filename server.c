@@ -6,9 +6,13 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:20:56 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/09 13:25:18 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/09 13:44:25 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
+int main(void)
+{
+	write(1, "Server PID: \n", 13);
+}
