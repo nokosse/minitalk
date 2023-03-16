@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:15:10 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/16 18:24:50 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/16 19:19:46 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int	send_signal(int pid, char *bin)
 		i++;
 	}
 	// send_end(pid);
+	write(1, "Message sent\n", 13);
 	if (kill(pid, 0) == -1)
 		return (0);
 	return (1);

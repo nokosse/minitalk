@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:20:56 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/16 18:57:43 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/16 19:20:22 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // How does minitalk (server) will work ?
 // It will 
 
-// This function 
+// This function will convert a number to binary.
 char	*get_bin(int num)
 {
 	static char	bin[9] = {'\0'};
@@ -31,6 +31,25 @@ char	*get_bin(int num)
 	return (bin);
 }
 
+// This function will convert a 8bits binary to a char.
+char	bin_to_char(char *bin)
+{
+	int	i;
+	int	num;
+
+	i = 0;
+	num = 0;
+	while (i < 8)
+	{
+		num <<= 1;
+		if (bin[i] == '1')
+			num |= 1;
+		i++;
+	}
+	return (num);
+}
+
+// This function will handle the signal.
 void	handle_signal(int sig)
 {
 	static int	count = 0;
@@ -50,6 +69,7 @@ void	handle_signal(int sig)
 	if (count == 8)
 	{
 		printf("%s\n", get_bin(num));
+		printf("%c", bin_to_char(get_bin(num)));
 		count = 0;
 		num = 0;
 	}
