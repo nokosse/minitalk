@@ -6,90 +6,72 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:20:56 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/16 19:20:22 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/17 18:51:34 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-// How does minitalk (server) will work ?
-// It will 
-
-// This function will convert a number to binary.
-char	*get_bin(int num)
+void	error(int pid, char *str)
 {
-	static char	bin[9] = {'\0'};
-	int			i;
-
-	i = 7;
-	while (i >= 0)
-	{
-		bin[i] = ((num & 1) ^ 1) + '0';
-		num >>= 1;
-		i--;
-	}
-	return (bin);
+	if (str)
+		free(str);
+	write(2, "server: unexpected error.\n", 26);
+	kill(pid, SIGUSR2);
+	exit(EXIT_FAILURE);
 }
 
-// This function will convert a 8bits binary to a char.
-char	bin_to_char(char *bin)
+char	*print_string(char *message)
 {
-	int	i;
-	int	num;
-
-	i = 0;
-	num = 0;
-	while (i < 8)
-	{
-		num <<= 1;
-		if (bin[i] == '1')
-			num |= 1;
-		i++;
-	}
-	return (num);
+	ft_putstr_fd(message, 1);
+	free(message);
+	return (NULL);
 }
 
-// This function will handle the signal.
-void	handle_signal(int sig)
+void	handler_sigusr(int signum, siginfo_t *info, void *context)
 {
-	static int	count = 0;
-	static int	num = 0;
+	static char	c = 0xFF;
+	static int	bits = 0;
+	static int	pid = 0;
+	static char	*message = 0;
 
-	if (sig == SIGUSR1)
+	(void)context;
+	if (info->si_pid)
+		pid = info->si_pid;
+	if (signum == SIGUSR1)
+		c ^= 0x80 >> bits;
+	else if (signum == SIGUSR2)
+		c |= 0x80 >> bits;
+	if (++bits == 8)
 	{
-		num <<= 1;
-		count++;
+		if (c)
+			message = str_append_c(message, c);
+		else
+			message = print_string(message);
+		bits = 0;
+		c = 0xFF;
 	}
-	else if (sig == SIGUSR2)
-	{
-		num <<= 1;
-		num |= 1;
-		count++;
-	}
-	if (count == 8)
-	{
-		printf("%s\n", get_bin(num));
-		printf("%c", bin_to_char(get_bin(num)));
-		count = 0;
-		num = 0;
-	}
+	if (kill(pid, SIGUSR1) == -1)
+		error(pid, message);
 }
 
 int	main(void)
 {
-	pid_t				pid;
-	struct	sigaction	sa;
+	struct sigaction	sa_signal;
+	sigset_t			block_mask;
 
-	pid = getpid();
-	printf("PID: %d\n", pid);
-	
-	sa.sa_handler = handle_signal;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
-	
+	sigemptyset(&block_mask);
+	sigaddset(&block_mask, SIGINT);
+	sigaddset(&block_mask, SIGQUIT);
+	sa_signal.sa_handler = 0;
+	sa_signal.sa_flags = SA_SIGINFO;
+	sa_signal.sa_mask = block_mask;
+	sa_signal.sa_sigaction = handler_sigusr;
+	sigaction(SIGUSR1, &sa_signal, NULL);
+	sigaction(SIGUSR2, &sa_signal, NULL);
+	write(1, "PID: \n", 6);
+	ft_putnbr_fd(getpid(), 1);
+	write(1, "\n", 1);
 	while (1)
 		pause();
-	return (0);
 }
