@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:20:56 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/20 19:46:13 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/20 19:53:35 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,10 @@ void	handle_error(int pid, char *str)
 	exit(EXIT_FAILURE);
 }
 
-char	*print_string(char *message)
+char	*print_msg(char *message)
 {
-	ft_putstr_fd(message, 1);
-	free(message);
-	return (NULL);
+	write(1, message, ft_strlen(message));
+	return (free(message), NULL);
 }
 
 // This function will handle the signal. Converting the sequence of signals
@@ -51,7 +50,7 @@ void	handle_signal(int signum, siginfo_t *info, void *context)
 		if (c)
 			message = str_append_c(message, c);
 		else
-			message = print_string(message);
+			message = print_msg(message);
 		bits = 0;
 		c = 0xFF;
 	}
