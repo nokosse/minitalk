@@ -6,17 +6,18 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:15:10 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/20 19:45:58 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/20 19:59:30 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
 // This function will handle the error.
-void	handle_error(char *msg)
+void	handle_error(char *msg, char **str)
 {
 	if (msg)
 		free(msg);
+	free(*str);
 	write(2, "client : error\n", 15);
 	exit(EXIT_FAILURE);
 }
@@ -31,7 +32,7 @@ int	send_null(int pid, char *str)
 	if (i++ != 8)
 	{
 		if (kill(pid, SIGUSR1) == -1)
-			handle_error(str);
+			handle_error(str, NULL);
 		return (0);
 	}
 	free(str);
@@ -61,7 +62,7 @@ int	send_bit(int pid, char *str)
 	if (str)
 		message = ft_strdup(str);
 	if (!message)
-		handle_error(0);
+		handle_error(0, 0);
 	if (pid)
 		s_pid = pid;
 	if (message[i] == '\0')
@@ -69,12 +70,12 @@ int	send_bit(int pid, char *str)
 	if (message[i] == '1')
 	{
 		if (kill(s_pid, SIGUSR2) == -1)
-			handle_error(message);
+			handle_error(message, &str);
 	}
 	else if (message[i] == '0')
 	{
 		if (kill(s_pid, SIGUSR1) == -1)
-			handle_error(message);
+			handle_error(message, &str);
 	}
 	i++;
 	return (0);
