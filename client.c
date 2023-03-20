@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:15:10 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/20 19:34:24 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/20 19:45:58 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	handle_signal(int sig)
 	}
 }
 
-int	main(int ac, char **av)	
+int	main(int ac, char **av)
 {
 	char	*bin;
 

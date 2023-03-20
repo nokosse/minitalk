@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:20:56 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/20 18:53:23 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/20 19:46:13 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	handle_signal(int signum, siginfo_t *info, void *context)
 		c = 0xFF;
 	}
 	if (kill(pid, SIGUSR1) == -1)
-		handle_error	(pid, message);
+		handle_error (pid, message);
 }
 
 // struct sigaction is a structure that contains the information
