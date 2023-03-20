@@ -6,13 +6,13 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:20:56 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/20 18:02:05 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/20 18:53:23 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	error(int pid, char *str)
+void	handle_error(int pid, char *str)
 {
 	if (str)
 		free(str);
@@ -28,7 +28,11 @@ char	*print_string(char *message)
 	return (NULL);
 }
 
-void	handler_sigusr(int signum, siginfo_t *info, void *context)
+// This function will handle the signal. Converting the sequence of signals
+// and translating it from binary to ASCII.
+// c is the character that will be printed.
+// 
+void	handle_signal(int signum, siginfo_t *info, void *context)
 {
 	static char	c = 0xFF;
 	static int	bits = 0;
@@ -52,9 +56,12 @@ void	handler_sigusr(int signum, siginfo_t *info, void *context)
 		c = 0xFF;
 	}
 	if (kill(pid, SIGUSR1) == -1)
-		error(pid, message);
+		handle_error	(pid, message);
 }
 
+// struct sigaction is a structure that contains the information
+// about the signal handler.
+// sigset_t is a set of signals.
 int	main(void)
 {
 	struct sigaction	sa_signal;
@@ -66,7 +73,7 @@ int	main(void)
 	sa_signal.sa_handler = 0;
 	sa_signal.sa_flags = SA_SIGINFO;
 	sa_signal.sa_mask = block_mask;
-	sa_signal.sa_sigaction = handler_sigusr;
+	sa_signal.sa_sigaction = handle_signal;
 	sigaction(SIGUSR1, &sa_signal, NULL);
 	sigaction(SIGUSR2, &sa_signal, NULL);
 	write(1, "PID: \n", 6);

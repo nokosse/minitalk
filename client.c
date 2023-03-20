@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:15:10 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/20 18:02:37 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/20 19:34:24 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	handle_error(char *msg)
 	exit(EXIT_FAILURE);
 }
 
-// This function will send 8 times SIGUSR2 to the server.
-// It will be used to tell the server that the message is over.
-// When we send the '\0'.
+// This function will send the '\0' to the server.
+// By sending 8 times SIGUSR2 we will tell the server that the message is over.
+// 8 times SIGUSR2 is equal to '\0' in binary.
 int	send_null(int pid, char *str)
 {
 	static int	i = 0;
@@ -38,6 +38,20 @@ int	send_null(int pid, char *str)
 	return (1);
 }
 
+// This function will send the message to the server.
+// It duplicates 'bit' to 'message' which is a static because
+// we need to keep the message in memory until the end.
+// Same for 's_pid' which is the server pid.
+// 'i' is the index of the message. It is also static because
+// we need to keep the index in memory until the end.
+//
+// When we send the '\0' we call the function 'send_null'.
+// It will send 8 times SIGUSR2 to the server.
+// It will be used to tell the server that the message is over.
+//
+// When we are on '1' we send SIGUSR2 to the server.
+// When we are on '0' we send SIGUSR1 to the server.
+// SIGUSR1 can be represented by '0' and SIGUSR2 by '1' in binary.
 int	send_bit(int pid, char *str)
 {
 	static char	*message = NULL;
@@ -67,6 +81,10 @@ int	send_bit(int pid, char *str)
 }
 
 // This function will handle the SIGUSR signal.
+// When we recieve SIGUSR1 from the server it means that the message was sent.
+// When we recieve SIGUSR2 from the server it means 'error' from the server.
+// end takes the value of 1 when the message was sent.
+// being able to exit the program with success.
 void	handle_signal(int sig)
 {
 	int	end;
@@ -86,7 +104,7 @@ void	handle_signal(int sig)
 	}
 }
 
-int	main(int ac, char **av)
+int	main(int ac, char **av)	
 {
 	char	*bin;
 
@@ -104,3 +122,7 @@ int	main(int ac, char **av)
 		pause();
 	return (0);
 }
+
+// TODO : add comments
+// TODO : get rid of still reachable memory leaks
+// maybe use global variables ?
