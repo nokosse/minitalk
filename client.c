@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:15:10 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/20 19:59:30 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/20 20:01:45 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,5 @@ int	main(int ac, char **av)
 }
 
 // TODO : add comments
-// TODO : get rid of still reachable memory leaks
+// TODO : Do more test to check for leaks
 // maybe use global variables ?
