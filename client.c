@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:15:10 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/20 20:01:45 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/21 18:08:07 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,11 @@ int	send_bit(int pid, char *str)
 // This function will handle the SIGUSR signal.
 // When we recieve SIGUSR1 from the server it means that the message was sent.
 // When we recieve SIGUSR2 from the server it means 'error' from the server.
+//
 // end takes the value of 1 when the message was sent.
 // being able to exit the program with success.
+// The value '1' for 'end' is set in the function 'send_bit'.
+// when we send the '\0' to the server.
 void	handle_signal(int sig)
 {
 	int	end;
@@ -98,7 +101,7 @@ void	handle_signal(int sig)
 		write(2, "client : server ended unexpectedly\n", 35);
 		exit(EXIT_FAILURE);
 	}
-	if (end)
+	if (end == 1)
 	{
 		write (1, "client : message sent\n", 22);
 		exit(EXIT_SUCCESS);
@@ -123,7 +126,3 @@ int	main(int ac, char **av)
 		pause();
 	return (0);
 }
-
-// TODO : add comments
-// TODO : Do more test to check for leaks
-// maybe use global variables ?
