@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:15:10 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/22 16:43:59 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/22 17:36:33 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	main(int ac, char **av)
 		ft_putstr_fd("client : invalid arguments\n", 2);
 		exit(EXIT_FAILURE);
 	}
-	if (is_empty(av[2]) == 1)
+	if (av[2] == NULL || av[2][0] == '\0')
 	{
 		ft_putstr_fd("client : empty message\n", 2);
 		exit(EXIT_FAILURE);
@@ -150,4 +150,5 @@ int	main(int ac, char **av)
 // 1. The server recieves SIGUSR1 or 2 from the client representing '1' or '0'.
 // 2. It wait to recieve 8 bits (8 signals) to convert it to a char.
 // 4. The server append the letter to the message.
-// 5. Once the client sent '\0' (8 times SIGUSR2) the server will print the message.
+// 5. Once the client sent '\0' (8 times SIGUSR2)
+//		the server will print the message.

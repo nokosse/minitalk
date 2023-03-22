@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 15:06:09 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/22 15:23:49 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/22 17:02:46 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,4 @@ char	*str_to_bin(char *str)
 		str++;
 	}
 	return (bin[i] = '\0', bin);
-}
-
-// This function returns 1 if the string is empty or only contain a single '\0'
-// else it returns 0.
-int	is_empty(char *str)
-{
-	if (str == NULL)
-		return (1);
-	if (str[0] == '\0')
-		return (1);
-	return (0);
 }

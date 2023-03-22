@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:20:56 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/22 15:20:55 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/22 17:32:30 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*str_append_c(char *str, char c)
 // If we recieve SIGUSR2 (1) :
 // We do the same but with OR and not XOR.
 // We modify the bit at the index 'bits' to '1' if it's '0'
-// or keep it to '1' if the bit is already '1'. That's OR. (|=)
+// or keep it to '1' if the bit is already '1'. That's OR. (|=)		
 //
 // When the counter 'bits' is equal to 8, it means that we have
 // a full char. (ASCII) We can then print it.
