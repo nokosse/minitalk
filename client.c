@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:15:10 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/22 15:47:25 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/22 16:43:59 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ int	main(int ac, char **av)
 	signal(SIGUSR1, handle_signal);
 	signal(SIGUSR2, handle_signal);
 	bin = str_to_bin(av[2]);
-	printf("bin : %s\n", bin);
 	if (bin == NULL)
 		handle_error(0, 0);
 	send_bit(ft_atoi(av[1]), bin);
@@ -133,3 +132,22 @@ int	main(int ac, char **av)
 	while (1)
 		pause();
 }
+
+// How do my minitalk works ?
+//
+// Client side :
+// 1. The client takes string as an argument to send to the server.
+// 2. The client converts that string to binary in a char *.
+// 3. The client sends the binary to the server.
+//		- The client sends '1' as SIGUSR2.
+//		- The client sends '0' as SIGUSR1.
+// 4. The client sends a SIGUSR and waits for the server to respond
+//		- The server sends SIGUSR1 when the message has been received.
+//		- The server sends SIGUSR2 if there is an unexpected error.
+// 5. The client wait for the server to respond.
+//
+// Server side :
+// 1. The server recieves SIGUSR1 or 2 from the client representing '1' or '0'.
+// 2. It wait to recieve 8 bits (8 signals) to convert it to a char.
+// 4. The server append the letter to the message.
+// 5. Once the client sent '\0' (8 times SIGUSR2) the server will print the message.
