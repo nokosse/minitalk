@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:20:56 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/21 18:12:59 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:20:55 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // The client code will handle the SIGUSR2 as an error and will exit.
 void	handle_error(int pid, char *str)
 {
-	if (str)
+	if (str != NULL)
 		free(str);
 	write(2, "server: unexpected error.\n", 26);
 	kill(pid, SIGUSR2);
@@ -29,6 +29,37 @@ char	*print_msg(char *message)
 {
 	write(1, message, ft_strlen(message));
 	return (free(message), NULL);
+}
+
+// This function will add 'c' to the end of 'str'.
+// It always frees 'str' and returns the new string.
+//
+// For the first call, 'str' is NULL.
+// So in this case, we return a single letter followed by '\0'.
+char	*str_append_c(char *str, char c)
+{
+	char	*add;
+	int		i;
+
+	if (c == '\0')
+		return (NULL);
+	if (str == NULL)
+	{
+		add = malloc(sizeof(char) * 2);
+		if (!add)
+			return (NULL);
+		return (add[0] = c, add[1] = '\0', add);
+	}
+	add = malloc(sizeof(char) * (ft_strlen(str) + 2));
+	if (add == NULL)
+		return (free(str), NULL);
+	i = 0;
+	while (str[i])
+	{
+		add[i] = str[i];
+		i++;
+	}
+	return (free(str), add[i++] = c, add[i] = '\0', add);
 }
 
 // This function basically convert the binary to a char.

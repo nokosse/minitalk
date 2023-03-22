@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:15:10 by kvisouth          #+#    #+#             */
-/*   Updated: 2023/03/21 18:24:13 by kvisouth         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:47:25 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // This function will handle the error.
 void	handle_error(char *msg, char **str)
 {
-	if (msg)
+	if (msg != NULL)
 		free(msg);
 	free(*str);
 	write(2, "client : error\n", 15);
@@ -117,12 +117,19 @@ int	main(int ac, char **av)
 		ft_putstr_fd("client : invalid arguments\n", 2);
 		exit(EXIT_FAILURE);
 	}
+	if (is_empty(av[2]) == 1)
+	{
+		ft_putstr_fd("client : empty message\n", 2);
+		exit(EXIT_FAILURE);
+	}
 	signal(SIGUSR1, handle_signal);
 	signal(SIGUSR2, handle_signal);
 	bin = str_to_bin(av[2]);
+	printf("bin : %s\n", bin);
+	if (bin == NULL)
+		handle_error(0, 0);
 	send_bit(ft_atoi(av[1]), bin);
 	free(bin);
 	while (1)
 		pause();
-	return (0);
 }
